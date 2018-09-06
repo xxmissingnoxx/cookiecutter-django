@@ -5,5 +5,11 @@ set -o pipefail
 set -o nounset
 
 
+#Single Django project may have multiple apps with different locations for 
+#static content
+#By copying them from inside the individual apps into a single folder, you can 
+#point your frontend web server (e.g. nginx) to that single folder STATIC_ROOT 
+#and serve static files from a single location, rather than configure your web 
+#server to serve static files from multiple paths.
 python /app/manage.py collectstatic --noinput
 /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:5000 --chdir=/app

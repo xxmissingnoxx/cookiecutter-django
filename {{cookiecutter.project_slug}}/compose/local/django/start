@@ -5,5 +5,9 @@ set -o pipefail
 set -o nounset
 
 
+#Synchronizes the database state with the current set of models and migrations.
 python manage.py migrate
+
+#runserver_plus is a django_extension which makes debugging easier by showing
+#more comprehensive and interactive stack traces in the browser
 python manage.py runserver_plus 0.0.0.0:8000

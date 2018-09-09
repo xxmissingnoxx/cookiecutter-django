@@ -41,6 +41,8 @@ RUN chmod +x /entrypoint
 #Principle of least privilege
 RUN chown django /entrypoint
 
+#Start script moves static files to one place for benefit of nginx or other 
+#server and spins up the the gunicorn server behinid that frontend server
 COPY ./compose/production/django/start /start
 RUN sed -i 's/\r//' /start
 RUN chmod +x /start
@@ -60,10 +62,12 @@ COPY ./compose/production/django/celery/flower/start /start-flower
 RUN sed -i 's/\r//' /start-flower
 RUN chmod +x /start-flower
 {% endif %}
+
+
 COPY . /app
 
+#Principle of least privilege 
 RUN chown -R django /app
-
 USER django
 
 WORKDIR /app

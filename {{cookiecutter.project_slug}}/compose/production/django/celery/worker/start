@@ -5,4 +5,9 @@ set -o pipefail
 set -o nounset
 
 
+#Our project has a dedicated module for the celery component as described here:
+#http://docs.celeryproject.org/en/latest/getting-started/next-steps.html#project-layout
+#http://docs.celeryproject.org/en/latest/userguide/workers.html
+#Introduces helpful debugging task and optionally hooks in the raven client
+#for sentry.Structure heavily derived from celery docs on topic of django
 celery -A {{cookiecutter.project_slug}}.taskapp worker -l INFO

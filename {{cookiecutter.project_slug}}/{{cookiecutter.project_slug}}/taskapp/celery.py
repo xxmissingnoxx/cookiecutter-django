@@ -10,6 +10,9 @@ if not settings.configured:
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')  # pragma: no cover
 
 
+#The Celery library must be instantiated before use, this instance is called 
+#an application (or app for short).
+#http://docs.celeryproject.org/en/latest/getting-started/next-steps.html#project-layout
 app = Celery('{{cookiecutter.project_slug}}')
 
 
@@ -36,6 +39,7 @@ class CeleryAppConfig(AppConfig):
             # in other environments.
             # @formatter:off
 {%- endif %}
+            #To capture errors, you need to register a couple of signals to hijack Celery error handling:
             from raven import Client as RavenClient
             from raven.contrib.celery import register_signal as raven_register_signal
             from raven.contrib.celery import register_logger_signal as raven_register_logger_signal
@@ -44,13 +48,25 @@ class CeleryAppConfig(AppConfig):
 {%- endif %}
 
             raven_client = RavenClient(dsn=settings.RAVEN_CONFIG['dsn'])
+            # register a custom filter to filter out duplicate logs
             raven_register_logger_signal(raven_client)
+            ## hook into the Celery error handler
             raven_register_signal(raven_client)
         {%- endif %}
 
 
+#When you send a task message in Celery, that message won’t contain any source 
+#code, but only the name of the task you want to execute. This works similarly 
+#to how host names work on the internet: every worker maintains a mapping of 
+#task names to their actual functions, called the task registry.
+#Whenever you define a task, that task will also be added to the local registry
+
+#A task being bound means the first argument to the task will always be the 
+#task instance (self) 
 @app.task(bind=True)
 def debug_task(self):
+    #!r uses repr() and the f is formatting
+    #pragma is for the coverage module
     print(f'Request: {self.request!r}')  # pragma: no cover
 {% else %}
 # Use this as a starting point for your project with celery.

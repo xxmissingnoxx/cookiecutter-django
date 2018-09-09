@@ -4,5 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-
+#Our project has a dedicated module for the celery component as described here:
+#http://docs.celeryproject.org/en/latest/getting-started/next-steps.html#project-layout
+#http://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html
 celery -A {{cookiecutter.project_slug}}.taskapp beat -l INFO

@@ -4,6 +4,11 @@ set -o errexit
 set -o nounset
 
 
+#Our project has a dedicated module for the celery component as described here:
+#http://docs.celeryproject.org/en/latest/getting-started/next-steps.html#project-layout
+#We're informing flower of what our dedicated celery module is called while
+#providing the components needed to configure the broker and monitor the celery
+#module we've told it about 
 celery flower \
     --app={{cookiecutter.project_slug}}.taskapp \
     --broker="${CELERY_BROKER_URL}" \

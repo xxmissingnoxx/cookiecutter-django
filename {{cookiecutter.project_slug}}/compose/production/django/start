@@ -12,4 +12,11 @@ set -o nounset
 #and serve static files from a single location, rather than configure your web 
 #server to serve static files from multiple paths.
 python /app/manage.py collectstatic --noinput
+
+#Caddy is used as a reverse proxy in production which feeds gunicorn requests
+#Check out the Caddyfile to see the matching address used here
+
+#config.wsgi is a module which has an object in it called application. Check out
+#the wsgi.py file. "At its simplest, gunicorn just needs to be called with the 
+#location of a module containing a WSGI application object named application. "
 /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:5000 --chdir=/app

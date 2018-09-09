@@ -26,6 +26,8 @@ COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r//' /entrypoint
 RUN chmod +x /entrypoint
 
+#Start script runs migrate and starts runserver_plus extension to support 
+#debugging 
 COPY ./compose/local/django/start /start
 RUN sed -i 's/\r//' /start
 RUN chmod +x /start

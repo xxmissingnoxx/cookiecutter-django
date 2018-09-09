@@ -4,5 +4,12 @@ set -o errexit
 set -o nounset
 
 
+#Just in case it wasn't shut down correctly the last time we can clean up and
+#avoid an annoying error :
+#https://stackoverflow.com/questions/8706674/celery-django-cannot-start-celerybeat-on-windows-7
 rm -f './celerybeat.pid'
+
+#Our project has a dedicated module for the celery component as described here:
+#http://docs.celeryproject.org/en/latest/getting-started/next-steps.html#project-layout
+#http://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html
 celery -A {{cookiecutter.project_slug}}.taskapp beat -l INFO

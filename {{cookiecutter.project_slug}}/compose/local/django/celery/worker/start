@@ -4,4 +4,7 @@ set -o errexit
 set -o nounset
 
 
+#Our project has a dedicated module for the celery component as described here:
+#http://docs.celeryproject.org/en/latest/getting-started/next-steps.html#project-layout
+#http://docs.celeryproject.org/en/latest/userguide/workers.html
 celery -A {{cookiecutter.project_slug}}.taskapp worker -l INFO

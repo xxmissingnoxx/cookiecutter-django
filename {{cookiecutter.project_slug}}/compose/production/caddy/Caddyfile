@@ -1,7 +1,15 @@
+#Catch-all redirect to the https version
+#https://caddyserver.com/docs/redir
 www.{% raw %}{$DOMAIN_NAME}{% endraw %} {
     redir https://{{cookiecutter.domain_name}}
 }
 
+#header_upstream sets headers to be passed to the backend
+#remote=The client's IP address
+#scheme=The protocol/scheme used (usually http or https)
+#host=The host value on the request
+#log=log enables request logging. The request log is also known from some vernaculars as an access log.
+#errors=Without this middleware, error responses (HTTP status >= 400) are not logged and the client receives a plaintext error message
 {% raw %}{$DOMAIN_NAME}{% endraw %} {
     proxy / django:5000 {
         header_upstream Host {host}

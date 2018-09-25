@@ -19,4 +19,10 @@ python /app/manage.py collectstatic --noinput
 #config.wsgi is a module which has an object in it called application. Check out
 #the wsgi.py file. "At its simplest, gunicorn just needs to be called with the 
 #location of a module containing a WSGI application object named application. "
+
+#In the context of servers, 0.0.0.0 means "all IPv4 addresses on the local
+#machine". If a host has two ip addresses, 192.168.1.1 and 10.1.2.1, and a server
+#running on the host listens on 0.0.0.0, it will be reachable at both of those
+#IPs.
+#https://superuser.com/questions/949428/whats-the-difference-between-127-0-0-1-and-0-0-0-0
 /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:5000 --chdir=/app

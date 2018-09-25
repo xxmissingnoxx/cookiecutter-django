@@ -13,7 +13,8 @@ RUN apk update \
   # CFFI dependencies
   #These support argon hashing library
   && apk add libffi-dev py-cffi \
-  # Translations dependencies
+  # Translations dependencies available in Django
+  #https://stackoverflow.com/questions/27220052/django-i18n-make-sure-you-have-gnu-gettext-tools
   && apk add gettext \
   # https://docs.djangoproject.com/en/dev/ref/django-admin/#dbshell
   && apk add postgresql-client

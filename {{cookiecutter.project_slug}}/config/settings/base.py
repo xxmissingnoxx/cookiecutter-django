@@ -4,7 +4,9 @@ Base settings to build other settings files upon.
 
 import environ
 
+#STD_ROOT_DIR=os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 ROOT_DIR = environ.Path(__file__) - 3  # ({{ cookiecutter.project_slug }}/config/settings/base.py - 3 = {{ cookiecutter.project_slug }}/)
+# STD_APPS_DIR=os.path.join(STD_ROOT_DIR,"reddit")
 APPS_DIR = ROOT_DIR.path('{{ cookiecutter.project_slug }}')
 
 env = environ.Env()
@@ -37,6 +39,13 @@ USE_TZ = True
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
+#Django uses the database with the alias of default when no other database 
+#has been selected.
+
+#What problem does atomic requests solve?
+#The case where you have a view or other operation that requires 2 or more 
+#transactions your DB could end up in a corrupted state if one of them fail
+
 {% if cookiecutter.use_docker == 'y' -%}
 DATABASES = {
     'default': env.db('DATABASE_URL'),
@@ -105,8 +114,16 @@ LOGIN_URL = 'account_login'
 # PASSWORDS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
+
+#Only the first hasher in the list is used to hash the password in question for
+#storage, BUT the others will be used for verification later.
 PASSWORD_HASHERS = [
     # https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django
+    #Argon isn't a default for django because it requires a dependency but is
+    #recommended by the framework team. bcrypt is recommended by the team for
+    #longer term storage of passwords and has a dependency which is why it is
+    #not in the default setup
+
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
